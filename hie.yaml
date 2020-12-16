@@ -1,0 +1,10 @@
+# https://github.com/haskell/haskell-ide-engine/issues/1564#issuecomment-574760343
+cradle:
+    cabal:
+        - path: ./backend
+          component: "backend"
+        - path: ./backend/test
+          component: "backend-test"
+
+dependencies:
+    - package.yaml

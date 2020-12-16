@@ -41,6 +41,8 @@
             inherit Cabal hackage-security hpack http-download rio-prettyprint;
           });
         });
+
+        haskell-language-server = ghc.haskell-language-server;
       };
 
     overrides = self: super: {
