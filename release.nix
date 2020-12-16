@@ -42,6 +42,8 @@
           });
         });
 
+        hoogle = dontCheck (ghc.callHackage "hoogle" "5.0.18" {});
+
         haskell-language-server = ghc.haskell-language-server;
       };
 
