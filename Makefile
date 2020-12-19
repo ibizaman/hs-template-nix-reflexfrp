@@ -2,6 +2,8 @@
 .PHONY: run-release-backend
 .PHONY: build-backend
 .PHONY: run-backend
+.PHONY: build-common
+.PHONY: build-release-common
 .PHONY: hoogle
 .PHONY: hoogle-build
 .PHONY: hoogle-generate
@@ -19,6 +21,12 @@ build-backend:
 
 run-backend:
 	nix-shell --pure --run 'stack run backend'
+
+build-release-common:
+	nix-build --pure -o common-result -A ghc.common
+
+build-common:
+	nix-shell --pure --run 'stack build common'
 
 backend-hoogle-build:
 	nix-shell --pure --run 'stack build --haddock --haddock-deps'

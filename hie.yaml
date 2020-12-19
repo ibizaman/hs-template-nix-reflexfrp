@@ -5,6 +5,10 @@ cradle:
           component: "backend"
         - path: ./backend/test
           component: "backend-test"
+        - path: ./common
+          component: "common"
+        - path: ./common/test
+          component: "common-test"
 
 dependencies:
     - package.yaml

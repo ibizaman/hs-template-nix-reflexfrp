@@ -1,17 +1,17 @@
-name: backend
+name: common
 version: 0.0.0.1
-github: "ibizaman/hs-template-nix-reflexfrp/backend"
+github: "ibizaman/hs-template-nix-reflexfrp/common"
 license: BSD3
 author: "Pierre Penninckx"
 maintainer: "ibizapeanut@gmail.com"
 copyright: "2020 Pierre Penninckx"
 
-description: Please see the README on GitHub at <https://ibizaman/hs-template-nix-reflexfrp/backend>
+description: Please see the README on GitHub at <https://ibizaman/hs-template-nix-reflexfrp/common>
 
 dependencies:
     # base must match what comes with ghc
     - base == 4.12.0.0
-    - common
+    - text == 1.2.3.1
 
 default-extensions:
     - OverloadedStrings
@@ -20,23 +20,12 @@ library:
     source-dirs: src
     dependencies: {}
 
-executables:
-    backend-exe:
-        main: main.hs
-        source-dirs: app
-        dependencies:
-            - backend
-        ghc-options:
-            - -rtsopts
-            - -threaded
-            - -with-rtsopts=-N
-
 tests:
-    backend-test:
+    common-test:
         main: Spec.hs
         source-dirs: test
         dependencies:
-            - backend
+            - common
             - hspec == 2.7.1
             - hspec-core == 2.7.1
             - hspec-discover == 2.7.1

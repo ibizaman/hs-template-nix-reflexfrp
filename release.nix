@@ -8,11 +8,12 @@
     useWarp = true;
 
     packages = {
+      common = ./common;
       backend = ./backend;
     };
 
     shells = {
-      ghc = ["backend"];
+      ghc = ["common" "backend"];
     };
 
     shellToolOverrides = _ghc: super:
