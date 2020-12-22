@@ -16,36 +16,15 @@
       ghc = ["common" "backend"];
     };
 
-    shellToolOverrides = _ghc: super:
+    shellToolOverrides = ghc: super:
       let
         inherit (pkgs'.haskell.lib) dontCheck;
 
-        ghc = pkgs'.haskell.packages.${compiler};
-      in with pkgs'; rec {
+        ghc' = pkgs'.haskell.packages.${compiler};
+      in {
         haskell-ide-engine = null;
 
-        stack = dontCheck ((ghc.callHackage "stack" "2.3.1" {}).override rec {
-          Cabal = dontCheck (ghc.callHackage "Cabal" "3.0.2.0" {});
-          hpack = dontCheck (ghc.hpack.override {
-            inherit Cabal;
-          });
-          rio-prettyprint = dontCheck (ghc.rio-prettyprint.override {
-            inherit Cabal;
-          });
-          hackage-security = dontCheck (ghc.hackage-security.override {
-            inherit Cabal;
-          });
-          http-download = dontCheck (ghc.http-download.override {
-            inherit rio-prettyprint;
-          });
-          pantry = dontCheck (ghc.pantry.override {
-            inherit Cabal hackage-security hpack http-download rio-prettyprint;
-          });
-        });
-
-        hoogle = dontCheck (ghc.callHackage "hoogle" "5.0.18" {});
-
-        haskell-language-server = ghc.haskell-language-server;
+        haskell-language-server = ghc'.haskell-language-server;
       };
 
     overrides = self: super: {

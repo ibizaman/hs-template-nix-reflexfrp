@@ -13,24 +13,35 @@
 .PHONY: clean-cabals
 .PHONY: clean
 
-backend-release-build: clean-cabals
+common/common.cabal: common/package.yaml
+	nix-shell --pure --run 'hpack $<'
+
+backend/backend.cabal: backend/package.yaml
+	nix-shell --pure --run 'hpack $<'
+
+frontend/frontend.cabal: frontend/package.yaml
+	nix-shell --pure --run 'hpack $<'
+
+
+backend-release-build: backend/backend.cabal common/common.cabal
 	nix-build --pure -o backend-result -A ghc.backend
 
 backend-release-run:
 	./backend-result/bin/backend-exe
 
-backend-build: clean-cabals
-	nix-shell --pure --run 'stack build backend'
+backend-build: backend/backend.cabal common/common.cabal
+	nix-shell --pure --run 'cabal build backend'
 
 backend-run:
-	nix-shell --pure --run 'stack run backend'
+	nix-shell --pure --run 'cabal run backend-exe'
 
 
-common-release-build: clean-cabals
+common-release-build: common/common.cabal
 	nix-build --pure -o common-result -A ghc.common
 
-common-build: clean-cabals
-	nix-shell --pure --run 'stack build common'
+common-build: common/common.cabal
+	nix-shell --pure --run 'cabal build common'
+
 
 hoogle-build-backend:
 	nix-shell --pure --run 'stack build --haddock --haddock-deps'
