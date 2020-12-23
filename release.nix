@@ -2,18 +2,30 @@
 , system ? builtins.currentSystem
 , reflex-platform ? fetchTarball "https://github.com/reflex-frp/reflex-platform/archive/v0.6.2.0.tar.gz"
 , pkgs' ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/20.09.tar.gz") {}
+, useWarp ? true
 }:
-(import reflex-platform { inherit system; }).project (
+(import reflex-platform {
+
+  inherit system;
+
+  haskellOverlaysPost = [
+    # Use system hpack:
+    (_: _: { hpack = pkgs'.haskell.packages.${compiler}.callHackage "hpack" "0.32.0" {}; })
+  ];
+
+}).project (
   { pkgs, ... }: {
-    useWarp = true;
+    inherit useWarp;
 
     packages = {
       common = ./common;
       backend = ./backend;
+      frontend = ./frontend;
     };
 
     shells = {
-      ghc = ["common" "backend"];
+      ghc = ["common" "backend" "frontend"];
+      ghcjs = ["common" "frontend"];
     };
 
     shellToolOverrides = ghc: super:

@@ -9,6 +9,10 @@ cradle:
           component: "common"
         - path: ./common/test
           component: "common-test"
+        - path: ./frontend
+          component: "frontend"
+        - path: ./frontend
+          component: "frontend-test"
 
 dependencies:
     - package.yaml

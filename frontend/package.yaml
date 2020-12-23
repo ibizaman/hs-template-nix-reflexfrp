@@ -1,34 +1,28 @@
-name: common
+name: frontend
 version: 0.0.0.1
-github: "ibizaman/hs-template-nix-reflexfrp/common"
+github: "ibizaman/hs-template-nix-reflexfrp/frontend"
 license: BSD3
 author: "Pierre Penninckx"
 maintainer: "ibizapeanut@gmail.com"
 copyright: "2020 Pierre Penninckx"
 
-description: Please see the README on GitHub at <https://ibizaman/hs-template-nix-reflexfrp/common>
+description: Please see the README on GitHub at <https://ibizaman/hs-template-nix-reflexfrp/frontend>
 
 dependencies:
     # base must match what comes with ghc
     - base == 4.12.0.0
+    - common
     - text >= 1.2.3.0 && < 1.2.4
+    - reflex
+    - reflex-dom
 
 default-extensions:
     - OverloadedStrings
 
-library:
-    source-dirs: src
-    dependencies: {}
-
-tests:
-    common-test:
-        main: Spec.hs
-        source-dirs: test
-        dependencies:
-            - common
-            - hspec == 2.7.1
-            - hspec-core == 2.7.1
-            - hspec-discover == 2.7.1
+executables:
+    frontend-exe:
+        main: main.hs
+        source-dirs: app
         ghc-options:
             - -rtsopts
             - -threaded

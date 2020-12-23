@@ -5,6 +5,12 @@
 .PHONY: hoogle-build-backend
 .PHONY: common-build
 .PHONY: common-release-build
+.PHONY: frontend-release-build
+.PHONY: frontend-build
+.PHONY: frontend-run
+.PHONY: frontend-desktop-release-build
+.PHONY: frontend-desktop-build
+.PHONY: frontend-desktop-run
 .PHONY: hoogle-build-backend
 .PHONY: hoogle-build
 .PHONY: hoogle-generate
@@ -43,6 +49,45 @@ common-build: common/common.cabal
 	nix-shell --pure --run 'cabal build common'
 
 
+frontend-release-build: frontend/frontend.cabal common/common.cabal
+	nix-build --pure -o frontend-result -A ghcjs.frontend
+
+frontend-release-run:
+	@echo "Open in your browser file://$$PWD/frontend-result/bin/frontend-exe.jsexe/index.html"
+
+frontend-build: frontend/frontend.cabal common/common.cabal
+	nix-shell --pure --run "cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs build frontend" shell.ghcjs.nix
+
+frontend-run:
+	@echo "Open in your browser file://$$PWD/$$(find dist-ghcjs/ -name index.html)"
+
+
+frontend-warp-release-build: frontend/frontend.cabal common/common.cabal
+	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend
+
+frontend-warp-release-run:
+	./frontend-warp-result/bin/frontend-exe
+
+frontend-warp-build: frontend/frontend.cabal common/common.cabal
+	nix-shell --pure --run "cabal build frontend" --arg useWarp true shell.nix
+
+frontend-warp-run:
+	nix-shell --pure --run "cabal run frontend" --arg useWarp true shell.nix
+
+
+frontend-desktop-release-build: frontend/frontend.cabal common/common.cabal
+	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend
+
+frontend-desktop-release-run:
+	./frontend-desktop-result/bin/frontend-exe
+
+frontend-desktop-build: frontend/frontend.cabal common/common.cabal
+	nix-shell --pure --run "cabal build frontend" --arg useWarp false shell.nix
+
+frontend-desktop-run:
+	nix-shell --pure --run "cabal run frontend" --arg useWarp false shell.nix
+
+
 hoogle-build-backend:
 	nix-shell --pure --run 'stack build --haddock --haddock-deps'
 
@@ -59,10 +104,14 @@ hoogle: hoogle-build hoogle-generate hoogle-server
 
 clean-cabals:
 	rm -f common/common.cabal
+	rm -f frontend/frontend.cabal
 	rm -f backend/backend.cabal
 
 clean-tmp:
 	rm -rf backend-result
 	rm -rf common-result
+	rm -rf frontend-result
+	rm -rf frontend-warp-result
+	rm -rf frontend-desktop-result
 
 clean: clean-cabals clean-tmp

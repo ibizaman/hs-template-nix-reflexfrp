@@ -1,1 +1,2 @@
-(import ./release.nix { })
+{ useWarp ? false }:
+(import ./release.nix { inherit useWarp; })
