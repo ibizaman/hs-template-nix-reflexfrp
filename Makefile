@@ -61,4 +61,8 @@ clean-cabals:
 	rm -f common/common.cabal
 	rm -f backend/backend.cabal
 
-clean: clean-cabals
+clean-tmp:
+	rm -rf backend-result
+	rm -rf common-result
+
+clean: clean-cabals clean-tmp
