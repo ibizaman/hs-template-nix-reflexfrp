@@ -1,14 +1,8 @@
+# tmp dirs
 *-result
 dist-*
-
-
-*~
 *.cabal
-.stack-work
 
-
-*#
+# editor tmp files
 *~
-_cache/
-_site/
-result
+*#
