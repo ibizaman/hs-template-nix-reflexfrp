@@ -2,7 +2,6 @@
 .PHONY: backend-release-run
 .PHONY: backend-build
 .PHONY: backend-run
-.PHONY: hoogle-build-backend
 .PHONY: common-build
 .PHONY: common-release-build
 .PHONY: frontend-release-build
@@ -11,10 +10,8 @@
 .PHONY: frontend-desktop-release-build
 .PHONY: frontend-desktop-build
 .PHONY: frontend-desktop-run
-.PHONY: hoogle-build-backend
-.PHONY: hoogle-build
 .PHONY: hoogle-generate
-.PHONY: hoogle-serve
+.PHONY: hoogle-serve-dependencies
 .PHONY: hoogle
 .PHONY: cachix-enable
 .PHONY: cachix-push
@@ -90,18 +87,11 @@ frontend-desktop-run:
 	nix-shell --pure --run "cabal run frontend" --arg useWarp false shell.nix
 
 
-hoogle-build-backend:
-	nix-shell --pure --run 'stack build --haddock --haddock-deps'
-
-hoogle-build: backend-hoogle-build
-
 hoogle-generate:
-	nix-shell --pure --run 'stack hoogle -- generate --quiet --local'
+	nix-shell --pure --run 'hoogle generate --quiet --local --database=hoogle/database.hoo'
 
-hoogle-serve:
-	nix-shell --pure --command 'hoogle serve --local -p 65000 --database=$$(stack path --local-hoogle-root)/database.hoo'
-
-hoogle: hoogle-build hoogle-generate hoogle-server
+hoogle-serve-dependencies:
+	nix-shell --pure --command 'hoogle serve --local -p 65000 --database=hoogle/database.hoo'
 
 
 cachix-enable:
