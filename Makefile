@@ -10,8 +10,11 @@
 .PHONY: frontend-desktop-release-build
 .PHONY: frontend-desktop-build
 .PHONY: frontend-desktop-run
+.PHONY: hoogle-build-backend
+.PHONY: hoogle-build-common
+.PHONY: hoogle-build-frontend
 .PHONY: hoogle-generate
-.PHONY: hoogle-serve-dependencies
+.PHONY: hoogle-serve
 .PHONY: hoogle
 .PHONY: cachix-enable
 .PHONY: cachix-push
@@ -26,6 +29,8 @@ backend/backend.cabal: backend/package.yaml
 
 frontend/frontend.cabal: frontend/package.yaml
 	nix-shell --pure --run 'hpack $<'
+
+cabals: common/common.cabal backend/backend.cabal frontend/frontend.cabal
 
 
 backend-release-build: backend/backend.cabal common/common.cabal
@@ -87,11 +92,22 @@ frontend-desktop-run:
 	nix-shell --pure --run "cabal run frontend" --arg useWarp false shell.nix
 
 
-hoogle-generate:
-	nix-shell --pure --run 'hoogle generate --quiet --local --database=hoogle/database.hoo'
+hoogle-build-backend: cabals
+	nix-shell --pure --run 'cabal haddock --haddock-hoogle --haddock-html --haddock-all --haddock-quickjump --haddock-hyperlink-source backend'
 
-hoogle-serve-dependencies:
-	nix-shell --pure --command 'hoogle serve --local -p 65000 --database=hoogle/database.hoo'
+hoogle-build-common: cabals
+	nix-shell --pure --run 'cabal haddock --haddock-hoogle --haddock-html --haddock-all --haddock-quickjump --haddock-hyperlink-source common'
+
+hoogle-build-frontend: cabals
+	nix-shell --pure --run "cabal haddock --haddock-hoogle --haddock-html --haddock-all --haddock-quickjump --haddock-hyperlink-source frontend"
+
+hoogle-generate:
+	nix-shell --pure --run 'GHC_PACKAGE_PATH=./dist-newstyle/packagedb/ghc-8.6.5/: hoogle generate --quiet --local --database=hoogle/database.hoo'
+
+hoogle-serve:
+	nix-shell --pure --run 'hoogle serve --local -p 65000 --database=hoogle/database.hoo'
+
+hoogle: hoogle-build-backend hoogle-build-common hoogle-build-frontend hoogle-generate hoogle-serve
 
 
 cachix-enable:
@@ -119,4 +135,7 @@ clean-tmp:
 	rm -rf dist-newstyle
 	rm -rf dist-ghcjs
 
-clean: clean-cabals clean-tmp
+clean-doc:
+	rm -rf hoogle
+
+clean: clean-cabals clean-tmp clean-doc
