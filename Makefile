@@ -116,5 +116,7 @@ clean-tmp:
 	rm -rf frontend-result
 	rm -rf frontend-warp-result
 	rm -rf frontend-desktop-result
+	rm -rf dist-newstyle
+	rm -rf dist-ghcjs
 
 clean: clean-cabals clean-tmp
