@@ -1,5 +1,5 @@
 { system ? builtins.currentSystem
-, reflex-platform ? fetchTarball "https://github.com/reflex-frp/reflex-platform/archive/v0.6.2.0.tar.gz"
+, reflex-platform ? fetchTarball "https://github.com/reflex-frp/reflex-platform/archive/v0.7.0.0.tar.gz"
 , pkgs' ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/20.09.tar.gz") {}
 , useWarp ? true
 }:
