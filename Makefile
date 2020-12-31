@@ -33,59 +33,59 @@ frontend/frontend.cabal: frontend/package.yaml
 cabals: common/common.cabal backend/backend.cabal frontend/frontend.cabal
 
 
-backend-release-build: backend/backend.cabal common/common.cabal
+backend-release-build: cabals
 	nix-build --pure -o backend-result -A ghc.backend
 
 backend-release-run:
 	./backend-result/bin/backend-exe
 
-backend-build: backend/backend.cabal common/common.cabal
+backend-build: cabals
 	nix-shell --pure --run 'cabal build backend'
 
 backend-run:
 	nix-shell --pure --run 'cabal run backend-exe'
 
 
-common-release-build: common/common.cabal
+common-release-build: cabals
 	nix-build --pure -o common-result -A ghc.common
 
-common-build: common/common.cabal
+common-build: cabals
 	nix-shell --pure --run 'cabal build common'
 
 
-frontend-release-build: frontend/frontend.cabal common/common.cabal
+frontend-release-build: cabals
 	nix-build --pure -o frontend-result -A ghcjs.frontend
 
 frontend-release-run:
 	@echo "Open in your browser file://$$PWD/frontend-result/bin/frontend-exe.jsexe/index.html"
 
-frontend-build: frontend/frontend.cabal common/common.cabal
+frontend-build: cabals
 	nix-shell --pure --run "cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs build frontend" shell.ghcjs.nix
 
 frontend-run:
 	@echo "Open in your browser file://$$PWD/$$(find dist-ghcjs/ -name index.html)"
 
 
-frontend-warp-release-build: frontend/frontend.cabal common/common.cabal
+frontend-warp-release-build: cabals
 	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend
 
 frontend-warp-release-run:
 	./frontend-warp-result/bin/frontend-exe
 
-frontend-warp-build: frontend/frontend.cabal common/common.cabal
+frontend-warp-build: cabals
 	nix-shell --pure --run "cabal build frontend" --arg useWarp true shell.nix
 
 frontend-warp-run:
 	nix-shell --pure --run "cabal run frontend" --arg useWarp true shell.nix
 
 
-frontend-desktop-release-build: frontend/frontend.cabal common/common.cabal
+frontend-desktop-release-build: cabals
 	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend
 
 frontend-desktop-release-run:
 	./frontend-desktop-result/bin/frontend-exe
 
-frontend-desktop-build: frontend/frontend.cabal common/common.cabal
+frontend-desktop-build: cabals
 	nix-shell --pure --run "cabal build frontend" --arg useWarp false shell.nix
 
 frontend-desktop-run:
