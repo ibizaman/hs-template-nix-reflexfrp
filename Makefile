@@ -1,11 +1,14 @@
 .PHONY: backend-release-build
 .PHONY: backend-release-run
 .PHONY: backend-build
+.PHONY: backend-test
 .PHONY: backend-run
 .PHONY: common-build
+.PHONY: common-test
 .PHONY: common-release-build
 .PHONY: frontend-release-build
 .PHONY: frontend-build
+.PHONY: frontend-test
 .PHONY: frontend-run
 .PHONY: frontend-desktop-release-build
 .PHONY: frontend-desktop-build
@@ -42,6 +45,9 @@ backend-release-run:
 backend-build: cabals
 	nix-shell --pure --run 'cabal build backend'
 
+backend-test: cabals
+	nix-shell --pure --run 'cabal test backend'
+
 backend-run:
 	nix-shell --pure --run 'cabal run backend-exe'
 
@@ -52,6 +58,9 @@ common-release-build: cabals
 common-build: cabals
 	nix-shell --pure --run 'cabal build common'
 
+common-test: cabals
+	nix-shell --pure --run 'cabal test common'
+
 
 frontend-release-build: cabals
 	nix-build --pure -o frontend-result -A ghcjs.frontend
@@ -61,6 +70,9 @@ frontend-release-run:
 
 frontend-build: cabals
 	nix-shell --pure --run "cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs build frontend" shell.ghcjs.nix
+
+frontend-test: cabals
+	nix-shell --pure --run "cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs test frontend" shell.ghcjs.nix
 
 frontend-run:
 	@echo "Open in your browser file://$$PWD/$$(find dist-ghcjs/ -name index.html)"
