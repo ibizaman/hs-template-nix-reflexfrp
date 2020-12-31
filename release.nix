@@ -22,7 +22,12 @@
 
     shellToolOverrides = ghc: super:
       let
-        ghc' = pkgs'.haskell.packages.ghc865;
+        # This function transforms a version string "1.2.3" into "123".
+        removeDotsVersion = ghcVersion: builtins.concatStringsSep "" (builtins.splitVersion ghcVersion);
+
+        # Avoid hardcoding the version of ghc.
+        version = removeDotsVersion ghc.reflex.compiler.version;
+        ghc' = pkgs'.haskell.packages.${"ghc"+version};
       in {
         haskell-language-server = ghc'.haskell-language-server;
       };
