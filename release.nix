@@ -4,14 +4,7 @@
 , useWarp ? true
 }:
 (import reflex-platform {
-
   inherit system;
-
-  haskellOverlaysPost = [
-    # Use system hpack:
-    (_: _: { hpack = pkgs'.haskell.packages.${compiler}.callHackage "hpack" "0.32.0" {}; })
-  ];
-
 }).project (
   { pkgs, ... }: {
     inherit useWarp;
