@@ -48,7 +48,7 @@ backend-build: cabals
 backend-test: cabals
 	nix-shell --pure --run 'cabal test backend'
 
-backend-run:
+backend-run: cabals
 	nix-shell --pure --run 'cabal run backend-exe'
 
 
@@ -65,7 +65,7 @@ common-test: cabals
 frontend-release-build: cabals
 	nix-build --pure -o frontend-result -A ghcjs.frontend
 
-frontend-release-run:
+frontend-release-run: cabals
 	@echo "Open in your browser file://$$PWD/frontend-result/bin/frontend-exe.jsexe/index.html"
 
 frontend-build: cabals
@@ -74,33 +74,33 @@ frontend-build: cabals
 frontend-test: cabals
 	nix-shell --pure --run "cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs test frontend" shell.ghcjs.nix
 
-frontend-run:
+frontend-run: cabals
 	@echo "Open in your browser file://$$PWD/$$(find dist-ghcjs/ -name index.html)"
 
 
 frontend-warp-release-build: cabals
 	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend
 
-frontend-warp-release-run:
+frontend-warp-release-run: cabals
 	./frontend-warp-result/bin/frontend-exe
 
 frontend-warp-build: cabals
 	nix-shell --pure --run "cabal build frontend" --arg useWarp true shell.nix
 
-frontend-warp-run:
+frontend-warp-run: cabals
 	nix-shell --pure --run "cabal run frontend" --arg useWarp true shell.nix
 
 
 frontend-desktop-release-build: cabals
 	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend
 
-frontend-desktop-release-run:
+frontend-desktop-release-run: cabals
 	./frontend-desktop-result/bin/frontend-exe
 
 frontend-desktop-build: cabals
 	nix-shell --pure --run "cabal build frontend" --arg useWarp false shell.nix
 
-frontend-desktop-run:
+frontend-desktop-run: cabals
 	nix-shell --pure --run "cabal run frontend" --arg useWarp false shell.nix
 
 
