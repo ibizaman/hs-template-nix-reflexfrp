@@ -1,15 +1,32 @@
-module Types (User (..)) where
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
 
-import Data.Text
-  ( Text,
-    unpack,
+module Types
+  ( Item (..),
+    ItemId,
+    P.Entity,
+    migrateAll,
+    itemListToMap,
   )
+where
 
--- | A User with an ID and a name
-data User = User
-  { id :: Int,
-    name :: Text
-  }
+import qualified Data.Map as Map
+import qualified Database.Persist as P
+import qualified Database.Persist.TH as PTH
 
-instance Show User where
-  show (User id' name') = "[" <> show id' <> "] " <> unpack name'
+PTH.share
+  [PTH.mkPersist PTH.sqlSettings, PTH.mkMigrate "migrateAll"]
+  [PTH.persistLowerCase|
+Item json
+    name String
+    deriving Eq Show
+|]
+
+itemListToMap :: [P.Entity Item] -> Map.Map ItemId Item
+itemListToMap = Map.fromList . map (\eu -> (P.entityKey eu, P.entityVal eu))

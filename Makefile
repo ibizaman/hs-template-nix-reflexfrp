@@ -150,4 +150,7 @@ clean-tmp:
 clean-doc:
 	rm -rf hoogle
 
-clean: clean-cabals clean-tmp clean-doc
+clean-db:
+	rm sqlite.db*
+
+clean: clean-cabals clean-tmp clean-doc clean-db

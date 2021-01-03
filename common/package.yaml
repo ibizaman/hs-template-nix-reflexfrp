@@ -11,6 +11,10 @@ description: Please see the README on GitHub at <https://ibizaman/hs-template-ni
 dependencies:
     # base must match what comes with ghc
     - base == 4.12.0.0
+    - containers == 0.6.0.1
+    - servant == 0.16.2
+    - persistent == 2.9.2
+    - persistent-template == 2.6.0
     - text >= 1.2.3.0 && < 1.2.4
 
 default-extensions:
