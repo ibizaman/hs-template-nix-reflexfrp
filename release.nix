@@ -1,10 +1,10 @@
 { system ? builtins.currentSystem
-, reflex-platform ? fetchTarball "https://github.com/reflex-frp/reflex-platform/archive/v0.7.0.0.tar.gz"
-, pkgs' ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/20.09.tar.gz") {}
+, reflex-platform ? fetchGit {url = "https://github.com/ibizaman/reflex-platform.git"; ref = "haskell-language-server";}
 , useWarp ? true
 }:
 (import reflex-platform {
   inherit system;
+  hlsSupport = true;
 }).project (
   { pkgs, ... }: {
     inherit useWarp;
@@ -19,18 +19,6 @@
       ghc = ["common" "backend" "frontend"];
       ghcjs = ["common" "frontend"];
     };
-
-    shellToolOverrides = ghc: super:
-      let
-        # This function transforms a version string "1.2.3" into "123".
-        removeDotsVersion = ghcVersion: builtins.concatStringsSep "" (builtins.splitVersion ghcVersion);
-
-        # Avoid hardcoding the version of ghc.
-        version = removeDotsVersion ghc.reflex.compiler.version;
-        ghc' = pkgs'.haskell.packages.${"ghc"+version};
-      in {
-        haskell-language-server = ghc'.haskell-language-server;
-      };
 
     overrides = self: super: {
       # For frontend, 0.3.4 is broken, 0.3.5 does not have the correct
