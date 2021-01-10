@@ -127,10 +127,11 @@ cachix-enable:
 
 cachix-push:
 	nix-build --pure -o backend-result -A ghc.backend | cachix push ibizaman
-	nix-build --pure -o common-result -A ghc.common | cachix push ibizaman
+	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-result -A ghcjs.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend | cachix push ibizaman
-	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend | cachix push ibizaman
+	nix-build shell.nix | cachix push ibizaman
+	nix-build shell.ghcjs.nix | cachix push ibizaman
 
 
 clean-cabals:
