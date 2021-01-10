@@ -16,7 +16,7 @@ jobs:
             - run: nix-build shell.nix
             - run: make cabals
             - run: nix-shell --pure --run haskell-language-server-wrapper
-            # - run: nix-build shell.ghcjs.nix
+            - run: nix-build shell.ghcjs.nix
 
     build-all:
         runs-on: ubuntu-latest
@@ -34,12 +34,6 @@ jobs:
                   name: backend-exe
                   path: backend-result/bin/backend-exe
 
-            # - run: make frontend-release-build
-            # - uses: actions/upload-artifact@v2
-            #   with:
-            #       name: frontend-exe
-            #       path: frontend-result/bin/frontend-exe
-
             - run: make frontend-desktop-release-build
             - uses: actions/upload-artifact@v2
               with:
@@ -51,3 +45,9 @@ jobs:
               with:
                   name: frontend-warp-exe
                   path: frontend-warp-result/bin/frontend-exe
+
+            - run: make frontend-release-build
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: frontend-exe
+                  path: frontend-result/bin/frontend-exe
