@@ -14,7 +14,8 @@ jobs:
                   authToken: "${{ secrets.CACHIX_IBIZAMAN_AUTHTOKEN }}"
 
             - run: nix-build shell.nix
-
+            - run: make cabals
+            - run: nix-shell --pure --run haskell-language-server-wrapper
             # - run: nix-build shell.ghcjs.nix
 
     build-all:
