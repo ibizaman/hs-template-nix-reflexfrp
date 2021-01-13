@@ -104,6 +104,13 @@ frontend-desktop-run: cabals
 	nix-shell --pure --run "cabal run frontend" --arg useWarp false shell.nix
 
 
+android-build: cabals
+	nix-build -o android-result -A android.frontend --arg config '{system="x86_64-linux";}'
+
+ios-build: cabals
+	nix-build -o ios-result -A ios.frontend --arg config '{system="x86_64-darwin";}'
+
+
 hoogle-build-backend: cabals
 	nix-shell --pure --run 'cabal haddock --haddock-hoogle --haddock-html --haddock-all --haddock-quickjump --haddock-hyperlink-source backend'
 
@@ -130,6 +137,8 @@ cachix-push:
 	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-result -A ghcjs.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend | cachix push ibizaman
+	nix-build -o android-result -A android.frontend --arg config '{system="x86_64-linux";}' | cachix push ibizaman
+	nix-build -o ios-result -A ios.frontend --arg config '{system="x86_64-darwin";}' | cachix push ibizaman
 	nix-build shell.nix | cachix push ibizaman
 	nix-build shell.ghcjs.nix | cachix push ibizaman
 
@@ -145,6 +154,8 @@ clean-tmp:
 	rm -rf frontend-result
 	rm -rf frontend-warp-result
 	rm -rf frontend-desktop-result
+	rm -rf android-result
+	rm -rf ios-result
 	rm -rf dist-newstyle
 	rm -rf dist-ghcjs
 

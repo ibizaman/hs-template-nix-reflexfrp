@@ -3,8 +3,12 @@
 , useWarp ? true
 }:
 (import reflex-platform {
+
   inherit system;
   hlsSupport = true;
+
+  config.android_sdk.accept_license = true;
+
 }).project (
   { pkgs, ... }: {
     inherit useWarp;
@@ -18,6 +22,18 @@
     shells = {
       ghc = ["common" "backend" "frontend"];
       ghcjs = ["common" "frontend"];
+    };
+
+    android.frontend = {
+      executableName = "hs-template-nix-reflexfrp";
+      applicationId = "com.github.ibizaman.hs-template-nix-reflexfrp";
+      displayName = "HS Template Nix ReflexFRP";
+    };
+
+    ios.frontend = {
+      executableName = "hs-template-nix-reflexfrp";
+      bundleIdentifier = "com.github.ibizaman.hs-template-nix-reflexfrp";
+      bundleName = "HS Template Nix ReflexFRP";
     };
 
     overrides = self: super: {
