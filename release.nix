@@ -68,6 +68,10 @@
         description = "servant API generator for reflex apps";
         license = stdenv.lib.licenses.bsd3;
       }) {};
+
+      mmorph = pkgs.haskell.lib.dontHaddock super.mmorph;
+      x509-validation = pkgs.haskell.lib.dontCheck super.x509-validation; # Testing this takes just too much time
+      tls = pkgs.haskell.lib.dontCheck super.tls; # Testing this takes just too much time
     };
   }
 )
