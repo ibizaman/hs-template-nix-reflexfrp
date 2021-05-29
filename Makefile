@@ -24,6 +24,10 @@
 .PHONY: clean-cabals
 .PHONY: clean
 
+
+all: backend-release-build backend-build common-release-build common-build frontend-warp-release-build frontend-warp-build frontend-desktop-release-build frontend-desktop-build android-build
+
+
 common/common.cabal: common/package.yaml
 	nix-shell --pure --run 'hpack $<'
 
