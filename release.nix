@@ -26,7 +26,7 @@
 
     android.frontend = {
       executableName = "hs-template-nix-reflexfrp";
-      applicationId = "com.github.ibizaman.hs-template-nix-reflexfrp";
+      applicationId = "com.github.ibizaman.hstemplatenixreflexfrp";
       displayName = "HS Template Nix ReflexFRP";
     };
 
