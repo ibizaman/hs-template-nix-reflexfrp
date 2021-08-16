@@ -7,3 +7,5 @@ hoogle
 # editor tmp files
 *~
 *#
+
+sqlite.db*
