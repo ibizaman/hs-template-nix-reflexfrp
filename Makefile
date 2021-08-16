@@ -141,8 +141,8 @@ cachix-push:
 	nix-build --pure -o frontend-desktop-result --arg useWarp false -A ghc.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-result -A ghcjs.frontend | cachix push ibizaman
 	nix-build --pure -o frontend-warp-result --arg useWarp true -A ghc.frontend | cachix push ibizaman
-	nix-build -o android-result -A android.frontend --arg config '{system="x86_64-linux";}' | cachix push ibizaman
-	nix-build -o ios-result -A ios.frontend --arg config '{system="x86_64-darwin";}' | cachix push ibizaman
+	(nix-build -o android-result -A android.frontend --arg config '{system="x86_64-linux";}' | cachix push ibizaman) || :
+	(nix-build -o ios-result -A ios.frontend --arg config '{system="x86_64-darwin";}' | cachix push ibizaman) || :
 	nix-build shell.nix | cachix push ibizaman
 	nix-build shell.ghcjs.nix | cachix push ibizaman
 
