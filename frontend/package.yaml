@@ -14,7 +14,7 @@ dependencies:
     - common
     - containers == 0.6.0.1
     - text >= 1.2.3.0 && < 1.2.4
-    - reflex == 0.8.0.0
+    - reflex == 0.8.1.0
     - reflex-dom == 0.6.1.0
     - servant == 0.16.2
     - servant-server == 0.16.2
