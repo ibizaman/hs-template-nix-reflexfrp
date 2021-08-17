@@ -3,7 +3,7 @@
 # , reflex-platform ? fetchTarball "https://github.com/reflex-frp/reflex-platform/archive/v0.7.0.0.tar.gz"
 # Syntax to use a local folder:
 # , reflex-platform ? ../reflex-platform
-# I set it to my own fork that provides haskell-language-server:
+# Set to a fork providing haskell-language-server:
 , reflex-platform ? fetchGit {url = "https://github.com/ibizaman/reflex-platform.git"; ref = "haskell-language-server";}
 , useWarp ? true
 }:

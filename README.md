@@ -9,6 +9,38 @@ The goal of this project is two-fold:
   2. Provide an example app that is quite dumb but still mixes a few
      interesting packages.
 
+## Create a project from this template:
+
+Give no arguments for usage:
+```
+./src/hs-template-nix-reflexfrp/template.sh
+No PARENTPATH given, aborting
+USAGE: ./template.sh PARENTPATH PROJECTNAME GITHUBUSER FULLNAME CACHIXHANDLE
+```
+
+Give the arguments to create a project:
+```
+./src/hs-template-nix-reflexfrp/template.sh src testproject ibizaman "Pierre Penninckx" ibizaman
+Creating project in src/testproject
+GITHUBUSER:    ibizaman
+FULLNAME:      Pierre Penninckx
+CACHIXHANDLE:  ibizaman
+Project is created
+
+Tasks to complete:
+* Please update the android.frontend and ios.frontend fields in src/testproject/release.nix
+* Cachix is configured to use ibizaman, please make sure you have read and write access to that project.
+* Please create the CACHIX_TESTPROJECT_AUTHTOKEN variable in github containing the auth token for cachix, otherwise the github workflow will fail.
+* Comment out some sections of modd.conf
+```
+
+It also prints out a few tasks that were not automated or that cannot
+be automated (setting up cachix for example).
+
+This `template.sh` script is opinionated and assumes you're using
+github. It's good enough for now but I can tell you right away I don't
+like that.
+
 ## Files Layout
 
 The app is composed of three packages:
